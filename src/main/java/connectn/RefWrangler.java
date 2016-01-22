@@ -44,6 +44,22 @@ public class RefWrangler {
         board = new Board(boardWidth, boardHeight, numWin);
     }
 
+    public void waitForOpponent() {
+        int column = scanner.nextInt();
+        int moveType = scanner.nextInt();
 
+        board.move(new Action(board.OPPONENT, column, moveType));
+    }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public boolean isPlayingFirst() {
+        return playingFirst;
+    }
+
+    public void declareMove(Action action) {
+        System.out.println(action.column + " " + action.moveType);
+    }
 }

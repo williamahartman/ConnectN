@@ -10,6 +10,18 @@ public class Main {
 
         RefWrangler wrangler = new RefWrangler("q");
         wrangler.initGame();
-    }
 
+        Player p = new Player();
+
+        if(wrangler.isPlayingFirst()) {
+            Action move = p.makeMove(wrangler.getBoard());
+            wrangler.declareMove(move);
+        }
+
+        for (int i = 0; i < 100; i++){
+            wrangler.waitForOpponent();
+            Action move = p.makeMove(wrangler.getBoard());
+            wrangler.declareMove(move);
+        }
+    }
 }
