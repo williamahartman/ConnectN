@@ -10,13 +10,22 @@ public class Board {
     public static final byte PLAYER = 1;
     public static final byte OPPONENT = 2;
 
-    private int width;
-    private int height;
+    private static final int DIRECTION_VERTICAL = 0;
+    private static final int DIRECTION_HORIZONTAL = 1;
+    private static final int DIRECTION_DIAGONAL_POSITIVE = 2;
+    private static final int DIRECTION_DIAGONAL_NEGATIVE = 3;
+
+    private static final int[] DX = {0, 1, 1, 1};
+    private static final int[] DY = {1, 0, -1, 1};
+
     private int numWin;
 
     private boolean playerCanPop = true;
     private boolean opponentCanPop = true;
 
+
+    private int width;
+    private int height;
     private byte[][] state;
 
     public Board(int width, int height, int numWin) {
@@ -90,6 +99,37 @@ public class Board {
         }
 
         return actions;
+    }
+
+    //needs testing
+    private int countRegions(byte player, int direction, int length){
+        int dx = DX[direction];
+        int dy = DY[direction];
+
+        int count = 0;
+
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                if(state[x][y] == player && checkBounds(x + length*dx, y + length*dy)){
+                    boolean region = true;
+                    for(int i = 0; i < length; i++){
+                        if(state[x + i*dx][y + i*dy] != player){
+                            region = false;
+                            break;
+                        }
+                    }
+                    if(region){
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private boolean checkBounds(int x, int y){
+        return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
     private byte[][] copyState(){
