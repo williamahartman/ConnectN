@@ -63,6 +63,21 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testCountRegions(){
+        Board empty = new Board(width, height, numWin);
+        assertEquals(0, empty.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, numWin));
+
+        Board region3 = empty
+                .move(Action.getAction(Board.PLAYER, 2, Action.MOVE_DROP))
+                .move(Action.getAction(Board.PLAYER, 3, Action.MOVE_DROP))
+                .move(Action.getAction(Board.PLAYER, 4, Action.MOVE_DROP));
+
+        Util.printBoard(region3);
+
+        assertEquals(1, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 3));
+    }
+
 
 
 }

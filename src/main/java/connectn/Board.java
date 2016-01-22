@@ -12,10 +12,10 @@ public class Board {
     public static final byte PLAYER = 1;
     public static final byte OPPONENT = 2;
 
-    private static final int DIRECTION_VERTICAL = 0;
-    private static final int DIRECTION_HORIZONTAL = 1;
-    private static final int DIRECTION_DIAGONAL_POSITIVE = 2;
-    private static final int DIRECTION_DIAGONAL_NEGATIVE = 3;
+    public static final int DIRECTION_VERTICAL = 0;
+    public static final int DIRECTION_HORIZONTAL = 1;
+    public static final int DIRECTION_DIAGONAL_POSITIVE = 2;
+    public static final int DIRECTION_DIAGONAL_NEGATIVE = 3;
 
     private static final int[] DX = {0, 1, 1, 1};
     private static final int[] DY = {1, 0, -1, 1};
@@ -58,21 +58,21 @@ public class Board {
     public Board move(Action action) {
 
         byte[][] newState = copyState();
-        byte[] columnState = newState[action.column];
+        //byte[] columnState = newState[action.column];
 
         if (action.moveType == Action.MOVE_DROP) {
 
             for(int i = 0; i < height; i++){
-                if(columnState[i] == EMPTY){
-                    columnState[i] = action.player;
+                if(newState[action.column][i] == EMPTY){
+                    newState[action.column][i] = action.player;
                     break;
                 }
             }
         } else if (action.moveType == Action.MOVE_POP) {
             for(int i = 0; i < height-1; i++){
-                columnState[i] = columnState[i+1];
+                newState[action.column][i] = newState[action.column][i+1];
             }
-            columnState[height-1] = EMPTY;
+            newState[action.column][height-1] = EMPTY;
 
             if(action.player == PLAYER){
                 playerCanPop = false;
@@ -104,7 +104,7 @@ public class Board {
     }
 
     //needs testing
-    private int countRegions(byte player, int direction, int length){
+    public int countRegions(byte player, int direction, int length){
         int dx = DX[direction];
         int dy = DY[direction];
 
@@ -131,7 +131,7 @@ public class Board {
                     boolean beforeNotIncluded = (!checkBounds(xBefore, yBefore) || state[xBefore][yBefore] != player);
                     boolean afterNotIncluded = (!checkBounds(xAfter, yAfter) || state[xAfter][yAfter] != player);
 
-                    region = !(beforeNotIncluded && afterNotIncluded);
+                    region &= (beforeNotIncluded || afterNotIncluded);
 
                     if(region){
                         count++;

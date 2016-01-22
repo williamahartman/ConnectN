@@ -8,7 +8,7 @@ public class Util {
 
     public static void printBoard(Board board){
         byte[][] state = board.copyState();
-        for(int y = state.length-1; y > 0; y--){
+        for(int y = state[0].length-1; y >= 0; y--){
             for (int x = 0; x < state.length; x++){
                 System.out.print(state[x][y] + " ");
             }
