@@ -1,4 +1,4 @@
-import java.util.Scanner;
+package connectn;
 
 /**
  * Created by will on 1/21/16.

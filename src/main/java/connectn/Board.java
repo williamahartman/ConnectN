@@ -1,3 +1,5 @@
+package connectn;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +108,8 @@ public class Board {
         int dx = DX[direction];
         int dy = DY[direction];
 
+        boolean[][] regionMarkers = new boolean[width][height];
+
         int count = 0;
 
         for(int x = 0; x < width; x++){
@@ -113,18 +117,31 @@ public class Board {
                 if(state[x][y] == player && checkBounds(x + length*dx, y + length*dy)){
                     boolean region = true;
                     for(int i = 0; i < length; i++){
-                        if(state[x + i*dx][y + i*dy] != player){
+                        if(state[x + i*dx][y + i*dy] != player || regionMarkers[x + i*dx][y + i*dy]){
                             region = false;
                             break;
                         }
                     }
+
+                    //region is not part of a larger region
+                    int xBefore = x - dx;
+                    int yBefore = y - dy;
+                    int xAfter = x + length*dx;
+                    int yAfter = y + length*dy;
+                    boolean beforeNotIncluded = (!checkBounds(xBefore, yBefore) || state[xBefore][yBefore] != player);
+                    boolean afterNotIncluded = (!checkBounds(xAfter, yAfter) || state[xAfter][yAfter] != player);
+
+                    region = !(beforeNotIncluded && afterNotIncluded);
+
                     if(region){
                         count++;
+                        for(int i = 0; i < length; i++){
+                            regionMarkers[x + i*dx][y + i*dy] = true;
+                        }
                     }
                 }
             }
         }
-
         return count;
     }
 
@@ -132,7 +149,7 @@ public class Board {
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
-    private byte[][] copyState(){
+    public byte[][] copyState(){
         byte[][] newState = new byte[width][height];
         for(int i = 0; i < width; i++){
             System.arraycopy(state[i], 0, newState[i], 0, height);
