@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Akshay on 1/21/2016.
  */
@@ -10,6 +13,9 @@ public class Board {
     private int width;
     private int height;
     private int numWin;
+
+    private boolean playerCanPop = true;
+    private boolean opponentCanPop = true;
 
     private byte[][] state;
 
@@ -25,13 +31,17 @@ public class Board {
         this.width = base.width;
         this.height = base.height;
         this.numWin = base.numWin;
+        this.playerCanPop = base.playerCanPop;
+        this.opponentCanPop = base.opponentCanPop;
     }
 
-    public Board(byte[][] state, int numWin){
+    public Board(byte[][] state, int numWin, boolean playerCanPop, boolean opponentCanPop) {
         this.state = state;
         this.width = state.length;
         this.height = state[0].length;
         this.numWin = numWin;
+        this.playerCanPop = playerCanPop;
+        this.opponentCanPop = opponentCanPop;
     }
 
     public Board move(Action action) {
@@ -52,8 +62,34 @@ public class Board {
                 columnState[i] = columnState[i+1];
             }
             columnState[height-1] = EMPTY;
+
+            if(action.player == PLAYER){
+                playerCanPop = false;
+            } else {
+                opponentCanPop = false;
+            }
         }
-        return new Board(newState, numWin);
+        return new Board(newState, numWin, playerCanPop, opponentCanPop);
+    }
+
+    public List<Action> getActions(byte player){
+        List<Action> actions = new ArrayList<Action>();
+
+        for(int i = 0; i < width; i++){
+            if(state[i][height-1] == EMPTY){
+                actions.add(Action.getAction(player, i, Action.MOVE_DROP));
+            }
+        }
+
+        if((player == PLAYER && playerCanPop) || (player == OPPONENT && opponentCanPop)){
+            for(int i = 0; i < width; i++){
+                if(state[i][0] == player){
+                    actions.add(Action.getAction(player, i, Action.MOVE_POP));
+                }
+            }
+        }
+
+        return actions;
     }
 
     private byte[][] copyState(){
