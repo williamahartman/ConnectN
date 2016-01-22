@@ -7,9 +7,6 @@ public class Board {
     public static final byte PLAYER = 1;
     public static final byte OPPONENT = 2;
 
-    public static final int MOVE_DROP = 1;
-    public static final int MOVE_POP = 2;
-
     private int width;
     private int height;
     private int numWin;
@@ -37,20 +34,20 @@ public class Board {
         this.numWin = numWin;
     }
 
-    public Board move(byte player, int column, int moveType) {
+    public Board move(Action action) {
 
         byte[][] newState = copyState();
-        byte[] columnState = newState[column];
+        byte[] columnState = newState[action.column];
 
-        if (moveType == MOVE_DROP) {
+        if (action.moveType == Action.MOVE_DROP) {
 
             for(int i = 0; i < height; i++){
                 if(columnState[i] == EMPTY){
-                    columnState[i] = player;
+                    columnState[i] = action.player;
                     break;
                 }
             }
-        } else if (moveType == MOVE_POP) {
+        } else if (action.moveType == Action.MOVE_POP) {
             for(int i = 0; i < height-1; i++){
                 columnState[i] = columnState[i+1];
             }
@@ -66,5 +63,4 @@ public class Board {
         }
         return newState;
     }
-
 }
