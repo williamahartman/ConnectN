@@ -22,7 +22,7 @@ public class Action {
         }
     }
 
-    public static Action getAction(byte player, int column, int moveType){
+    public static Action get(byte player, int column, int moveType){
         return actions[player-1][column][moveType];
     }
 

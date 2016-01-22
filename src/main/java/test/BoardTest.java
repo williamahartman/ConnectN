@@ -36,7 +36,7 @@ public class BoardTest {
                 {0,0,0,0,0,0},
         }, empty.copyState());
 
-        Board move1 = empty.move(Action.getAction(Board.PLAYER, 3, Action.MOVE_DROP));
+        Board move1 = empty.move(Action.get(Board.PLAYER, 3, Action.MOVE_DROP));
         assertArrayEquals(new byte[][]{
                 {0,0,0,0,0,0},
                 {0,0,0,0,0,0},
@@ -48,8 +48,8 @@ public class BoardTest {
         }, move1.copyState());
 
         Board move4 = move1
-                .move(Action.getAction(Board.OPPONENT, 3, Action.MOVE_DROP))
-                .move(Action.getAction(Board.PLAYER, 5, Action.MOVE_DROP));
+                .move(Action.get(Board.OPPONENT, 3, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 5, Action.MOVE_DROP));
 
         assertArrayEquals(new byte[][]{
                 {0,0,0,0,0,0},
@@ -69,13 +69,30 @@ public class BoardTest {
         assertEquals(0, empty.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, numWin));
 
         Board region3 = empty
-                .move(Action.getAction(Board.PLAYER, 2, Action.MOVE_DROP))
-                .move(Action.getAction(Board.PLAYER, 3, Action.MOVE_DROP))
-                .move(Action.getAction(Board.PLAYER, 4, Action.MOVE_DROP));
+                .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 3, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 4, Action.MOVE_DROP));
 
         Util.printBoard(region3);
 
+        assertEquals(0, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 1));
+        assertEquals(0, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 2));
         assertEquals(1, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 3));
+
+        Board region4 = region3
+                .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
+                .move(Action.get(Board.PLAYER, 3, Action.MOVE_DROP));
+
+        Util.printBoard(region4);
+
+        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 1));
+        assertEquals(0, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 3));
+        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 4));
+        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_POSITIVE, 2));
+        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 2));
+        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 3));
     }
 
 

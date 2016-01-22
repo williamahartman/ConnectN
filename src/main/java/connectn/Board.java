@@ -18,7 +18,7 @@ public class Board {
     public static final int DIRECTION_DIAGONAL_NEGATIVE = 3;
 
     private static final int[] DX = {0, 1, 1, 1};
-    private static final int[] DY = {1, 0, -1, 1};
+    private static final int[] DY = {1, 0, 1, -1};
 
     private int numWin;
 
@@ -83,19 +83,24 @@ public class Board {
         return new Board(newState, numWin, playerCanPop, opponentCanPop);
     }
 
+    /**
+     * Returns a list of possible actions for the given player
+     * @param player
+     * @return
+     */
     public List<Action> getActions(byte player){
         List<Action> actions = new ArrayList<Action>();
 
         for(int i = 0; i < width; i++){
             if(state[i][height-1] == EMPTY){
-                actions.add(Action.getAction(player, i, Action.MOVE_DROP));
+                actions.add(Action.get(player, i, Action.MOVE_DROP));
             }
         }
 
         if((player == PLAYER && playerCanPop) || (player == OPPONENT && opponentCanPop)){
             for(int i = 0; i < width; i++){
                 if(state[i][0] == player){
-                    actions.add(Action.getAction(player, i, Action.MOVE_POP));
+                    actions.add(Action.get(player, i, Action.MOVE_POP));
                 }
             }
         }
@@ -103,40 +108,49 @@ public class Board {
         return actions;
     }
 
-    //needs testing
+    /**
+     * Count the number of regions the player has in the given direction of the specified length
+     * @param player
+     * @param direction
+     * @param length
+     * @return
+     */
     public int countRegions(byte player, int direction, int length){
+        //get director vector
         int dx = DX[direction];
         int dy = DY[direction];
 
-        boolean[][] regionMarkers = new boolean[width][height];
-
+        //count to regions found
         int count = 0;
 
+        //iterate over every position
         for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
-                if(state[x][y] == player && checkBounds(x + length*dx, y + length*dy)){
+            //only need to check vertically until the first empty spot
+            for(int y = 0; state[x][y] != EMPTY && y < height; y++){
+                //check if the position contains the player's piece, and if a matching region would fit in the board
+                if(state[x][y] == player && checkBounds(x + (length-1)*dx, y + (length-1)*dy)){
                     boolean region = true;
+                    //check LENGTH pieces in the direction of the region to see if it is filled with the player's pieces
                     for(int i = 0; i < length; i++){
-                        if(state[x + i*dx][y + i*dy] != player || regionMarkers[x + i*dx][y + i*dy]){
+                        //if there is a piece that is not the player's, it's not a region
+                        if(state[x + i*dx][y + i*dy] != player ){
                             region = false;
                             break;
                         }
                     }
 
-                    //region is not part of a larger region
-                    int xBefore = x - dx;
-                    int yBefore = y - dy;
-                    int xAfter = x + length*dx;
-                    int yAfter = y + length*dy;
-                    boolean beforeNotIncluded = (!checkBounds(xBefore, yBefore) || state[xBefore][yBefore] != player);
-                    boolean afterNotIncluded = (!checkBounds(xAfter, yAfter) || state[xAfter][yAfter] != player);
+                    if(region) {
+                        //check that region is not part of a larger region
+                        //if the slot before or after the region has a piece, it is part of a larger region and should not be counted
+                        int xBefore = x - dx;
+                        int yBefore = y - dy;
+                        int xAfter = x + length * dx;
+                        int yAfter = y + length * dy;
+                        boolean beforeNotIncluded = (!checkBounds(xBefore, yBefore) || state[xBefore][yBefore] != player);
+                        boolean afterNotIncluded = (!checkBounds(xAfter, yAfter) || state[xAfter][yAfter] != player);
 
-                    region &= (beforeNotIncluded || afterNotIncluded);
-
-                    if(region){
-                        count++;
-                        for(int i = 0; i < length; i++){
-                            regionMarkers[x + i*dx][y + i*dy] = true;
+                        if (beforeNotIncluded && afterNotIncluded) {
+                            count++;
                         }
                     }
                 }
@@ -145,6 +159,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Check if the given coordinate is on the board
+     * @param x
+     * @param y
+     * @return
+     */
     private boolean checkBounds(int x, int y){
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
