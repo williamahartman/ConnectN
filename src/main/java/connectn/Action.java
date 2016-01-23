@@ -5,8 +5,8 @@ package connectn;
  */
 public class Action {
 
-    public static final int MOVE_DROP = 0;
-    public static final int MOVE_POP = 1;
+    public static final int MOVE_DROP = 1;
+    public static final int MOVE_POP = 0;
 
     //player, columns, movetype
     private static Action[][][] actions;

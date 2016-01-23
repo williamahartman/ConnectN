@@ -20,37 +20,25 @@ public class Board {
     private static final int[] DX = {0, 1, 1, 1};
     private static final int[] DY = {1, 0, 1, -1};
 
-    private int numWin;
+    private final boolean playerCanPop;
+    private final boolean opponentCanPop;
 
-    private boolean playerCanPop = true;
-    private boolean opponentCanPop = true;
+    private final int width;
+    private final int height;
+    private final byte[][] state;
 
-
-    private int width;
-    private int height;
-    private byte[][] state;
-
-    public Board(int width, int height, int numWin) {
-        state = new byte[width][height];
-        this.width = width;
-        this.height = height;
-        this.numWin = numWin;
+    public Board(int width, int height) {
+        this(new byte[width][height], true, true);
     }
 
     public Board(Board base) {
-        this.state = base.state;
-        this.width = base.width;
-        this.height = base.height;
-        this.numWin = base.numWin;
-        this.playerCanPop = base.playerCanPop;
-        this.opponentCanPop = base.opponentCanPop;
+        this(base.copyState(), base.playerCanPop, base.opponentCanPop);
     }
 
-    public Board(byte[][] state, int numWin, boolean playerCanPop, boolean opponentCanPop) {
+    public Board(byte[][] state, boolean playerCanPop, boolean opponentCanPop) {
         this.state = state;
         this.width = state.length;
         this.height = state[0].length;
-        this.numWin = numWin;
         this.playerCanPop = playerCanPop;
         this.opponentCanPop = opponentCanPop;
     }
@@ -58,7 +46,8 @@ public class Board {
     public Board move(Action action) {
 
         byte[][] newState = copyState();
-        //byte[] columnState = newState[action.column];
+        boolean playerPop = this.playerCanPop;
+        boolean opponentPop = this.opponentCanPop;
 
         if (action.moveType == Action.MOVE_DROP) {
 
@@ -75,12 +64,12 @@ public class Board {
             newState[action.column][height-1] = EMPTY;
 
             if(action.player == PLAYER){
-                playerCanPop = false;
+                playerPop = false;
             } else {
-                opponentCanPop = false;
+                opponentPop = false;
             }
         }
-        return new Board(newState, numWin, playerCanPop, opponentCanPop);
+        return new Board(newState, playerPop, opponentPop);
     }
 
     /**
@@ -165,7 +154,7 @@ public class Board {
      * @param y
      * @return
      */
-    private boolean checkBounds(int x, int y){
+    public boolean checkBounds(int x, int y){
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
@@ -175,5 +164,13 @@ public class Board {
             System.arraycopy(state[i], 0, newState[i], 0, height);
         }
         return newState;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
     }
 }

@@ -5,23 +5,34 @@ package connectn;
  */
 public class Main {
 
+    private static final int NAME_LENGHT = 10;
+
 
     public static void main(String[] args) {
 
-        RefWrangler wrangler = new RefWrangler("q");
+        String name = generateName();
+        RefWrangler wrangler = new RefWrangler(name);
         wrangler.initGame();
-
-        Player p = new Player();
+        Action.initActions(wrangler.getBoardWidth());
+        Player player = new Player(wrangler.getTimeLimitMs());
 
         if(wrangler.isPlayingFirst()) {
-            Action move = p.makeMove(wrangler.getBoard());
+            Action move = player.makeMove(wrangler.getBoard());
             wrangler.declareMove(move);
         }
 
         for (int i = 0; i < 100; i++){
             wrangler.waitForOpponent();
-            Action move = p.makeMove(wrangler.getBoard());
+            Action move = player.makeMove(wrangler.getBoard());
             wrangler.declareMove(move);
         }
+    }
+
+    public static String generateName(){
+        String name = "";
+        while(name.length() < NAME_LENGHT){
+            name += String.valueOf((int)(Math.random()*10));
+        }
+        return name;
     }
 }

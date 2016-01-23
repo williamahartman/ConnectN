@@ -41,14 +41,14 @@ public class RefWrangler {
 
         playingFirst = firstPlayer == playerNumber;
 
-        board = new Board(boardWidth, boardHeight, numWin);
+        board = new Board(boardWidth, boardHeight);
     }
 
     public void waitForOpponent() {
         int column = scanner.nextInt();
         int moveType = scanner.nextInt();
-
-        board.move(new Action(board.OPPONENT, column, moveType));
+        Action opponentAction = Action.get(Board.OPPONENT, column, moveType);
+        board = board.move(Action.get(board.OPPONENT, column, moveType));
     }
 
     public Board getBoard() {
@@ -60,6 +60,23 @@ public class RefWrangler {
     }
 
     public void declareMove(Action action) {
+        board = board.move(action);
         System.out.println(action.column + " " + action.moveType);
+    }
+
+    public int getBoardWidth(){
+        return boardWidth;
+    }
+
+    public int getBoardHeight(){
+        return boardHeight;
+    }
+
+    public long getTimeLimitMs(){
+        return timeLimit;
+    }
+
+    public int getNumWin(){
+        return numWin;
     }
 }
