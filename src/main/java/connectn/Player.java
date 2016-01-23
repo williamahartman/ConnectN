@@ -54,7 +54,7 @@ public class Player {
 
 
     private int max(Board board, int currentDepth, int maxDepth){
-        if(currentDepth >= maxDepth && isTerminating(board, Board.PLAYER)){
+        if(currentDepth >= maxDepth || isTerminating(board, Board.PLAYER)){
             return heuristic(board);
         }
 
@@ -67,7 +67,7 @@ public class Player {
     }
 
     private int min(Board board, int currentDepth, int maxDepth){
-        if(currentDepth >= maxDepth && isTerminating(board, Board.OPPONENT)){
+        if(currentDepth >= maxDepth || isTerminating(board, Board.OPPONENT)){
             return heuristic(board);
         }
 
@@ -80,6 +80,12 @@ public class Player {
     }
 
     public int heuristic(Board board) {
-        return 0;
+        int value = 0;
+
+        for(int i = 1; i < numWin; i++){
+            value += Math.pow(board.countRegions(Board.PLAYER, i), 3);
+            value -= Math.pow(board.countRegions(Board.OPPONENT, i), 3);
+        }
+        return value;
     }
 }
