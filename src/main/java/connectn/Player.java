@@ -17,11 +17,7 @@ public class Player {
     }
 
     public Action makeMove(Board board) {
-        int column = (int) (Math.random() * board.getWidth());
-
-        Action playerMove = Action.get(Board.PLAYER, column, Action.MOVE_DROP);
-        board.move(playerMove);
-
+        Action playerMove = minimax(board, 3);
         return playerMove;
     }
 
@@ -39,19 +35,15 @@ public class Player {
     }
 
     public Action minimax(Board board, int maxDepth) {
-        List<Action> possibleMoves = board.getActions(Board.PLAYER);
 
-        if(possibleMoves.isEmpty()) {
+        if(isTerminating(board, Board.PLAYER)) {
             throw new RuntimeException("No possible moves. The game is already a draw!");
         }
 
         int currentBestHeuristic = Integer.MIN_VALUE;
         Action currentBestAction = null;
-        for(Action action: possibleMoves) {
-            Board newBoardState = new Board(board);
-            newBoardState.move(action);
-            int childValue = minimax(newBoardState, Board.OPPONENT, 1, maxDepth);
-
+        for(Action action: board.getActions(Board.PLAYER)) {
+            int childValue = min(board.move(action), 1, maxDepth);
             if(childValue >= currentBestHeuristic) {
                 currentBestAction = action;
             }
@@ -60,31 +52,31 @@ public class Player {
         return currentBestAction;
     }
 
-    private int minimax(Board board, byte currentPlayer, int currentDepth, int maxDepth) {
-        List<Action> possibleMoves = board.getActions(currentPlayer);
-        boolean isMax = currentPlayer == Board.PLAYER;
 
-        //Base case, no moves or at maximum depth
-        //Change "possibleMoves.isEmpty()" to  "board.isTerminating()"
-        if(currentDepth >= maxDepth || possibleMoves.isEmpty()) {
+    private int max(Board board, int currentDepth, int maxDepth){
+        if(currentDepth >= maxDepth && isTerminating(board, Board.PLAYER)){
             return heuristic(board);
         }
 
-        //Other cases, minimax on all children return the best one
-        int bestState = isMax ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-        for(Action action: possibleMoves) {
-            Board newBoardState = new Board(board);
-            newBoardState.move(action);
-            int childValue = minimax(newBoardState, currentPlayer, currentDepth + 1, maxDepth);
+        int maxValue = Integer.MIN_VALUE;
 
-            if(isMax && childValue >= bestState) {
-                bestState = childValue;
-            }
-            if(!isMax && childValue <= bestState) {
-                bestState = childValue;
-            }
+        for(Action action:board.getActions(Board.PLAYER)){
+            maxValue = Math.max(maxValue, min(board.move(action), currentDepth+1, maxDepth));
         }
-        return bestState;
+        return maxValue;
+    }
+
+    private int min(Board board, int currentDepth, int maxDepth){
+        if(currentDepth >= maxDepth && isTerminating(board, Board.OPPONENT)){
+            return heuristic(board);
+        }
+
+        int minValue = Integer.MAX_VALUE;
+
+        for(Action action: board.getActions(Board.OPPONENT)){
+            minValue = Math.min(minValue, max(board.move(action), currentDepth + 1, maxDepth));
+        }
+        return minValue;
     }
 
     public int heuristic(Board board) {
