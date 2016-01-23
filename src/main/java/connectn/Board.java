@@ -97,6 +97,13 @@ public class Board {
         return actions;
     }
 
+    public int countRegions(byte player, int length){
+        return countRegionsDirectional(player, DIRECTION_HORIZONTAL, length)
+                + countRegionsDirectional(player, DIRECTION_VERTICAL, length)
+                + countRegionsDirectional(player, DIRECTION_DIAGONAL_POSITIVE, length)
+                + countRegionsDirectional(player, DIRECTION_DIAGONAL_NEGATIVE, length);
+    }
+
     /**
      * Count the number of regions the player has in the given direction of the specified length
      * @param player
@@ -104,7 +111,7 @@ public class Board {
      * @param length
      * @return
      */
-    public int countRegions(byte player, int direction, int length){
+    public int countRegionsDirectional(byte player, int direction, int length){
         //get director vector
         int dx = DX[direction];
         int dy = DY[direction];

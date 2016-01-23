@@ -14,7 +14,7 @@ public class Main {
         RefWrangler wrangler = new RefWrangler(name);
         wrangler.initGame();
         Action.initActions(wrangler.getBoardWidth());
-        Player player = new Player(wrangler.getTimeLimitMs());
+        Player player = new Player(wrangler.getNumWin(), wrangler.getTimeLimitMs());
 
         if(wrangler.isPlayingFirst()) {
             Action move = player.makeMove(wrangler.getBoard());
