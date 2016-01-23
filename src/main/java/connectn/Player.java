@@ -1,7 +1,5 @@
 package connectn;
 
-import java.util.List;
-
 /**
  * Created by will on 1/21/16.
  */
@@ -31,11 +29,9 @@ public class Player {
         return board.countRegions(Board.PLAYER, numWin) > 0
                 || board.countRegions(Board.OPPONENT, numWin) > 0
                 || board.getActions(player).size() == 0;
-
     }
 
     public Action minimax(Board board, int maxDepth) {
-
         if(isTerminating(board, Board.PLAYER)) {
             throw new RuntimeException("No possible moves. The game is already a draw!");
         }
@@ -43,7 +39,7 @@ public class Player {
         int currentBestHeuristic = Integer.MIN_VALUE;
         Action currentBestAction = null;
         for(Action action: board.getActions(Board.PLAYER)) {
-            int childValue = min(board.move(action), 1, maxDepth);
+            int childValue = min(board.move(action), Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth);
             if(childValue >= currentBestHeuristic) {
                 currentBestAction = action;
             }
@@ -52,29 +48,38 @@ public class Player {
         return currentBestAction;
     }
 
-
-    private int max(Board board, int currentDepth, int maxDepth){
+    private int max(Board board, int alpha, int beta, int currentDepth, int maxDepth){
         if(currentDepth >= maxDepth || isTerminating(board, Board.PLAYER)){
             return heuristic(board);
         }
 
+        int localAlpha;
         int maxValue = Integer.MIN_VALUE;
 
         for(Action action:board.getActions(Board.PLAYER)){
-            maxValue = Math.max(maxValue, min(board.move(action), currentDepth+1, maxDepth));
+            maxValue = Math.max(maxValue, min(board.move(action), alpha, beta, currentDepth+1, maxDepth));
+            localAlpha = Math.max(alpha, maxValue);
+            if(beta <= localAlpha) {
+                break;
+            }
         }
         return maxValue;
     }
 
-    private int min(Board board, int currentDepth, int maxDepth){
+    private int min(Board board, int alpha, int beta, int currentDepth, int maxDepth){
         if(currentDepth >= maxDepth || isTerminating(board, Board.OPPONENT)){
             return heuristic(board);
         }
 
+        int localBeta;
         int minValue = Integer.MAX_VALUE;
 
         for(Action action: board.getActions(Board.OPPONENT)){
-            minValue = Math.min(minValue, max(board.move(action), currentDepth + 1, maxDepth));
+            minValue = Math.min(minValue, max(board.move(action), alpha, beta, currentDepth + 1, maxDepth));
+            localBeta = Math.min(beta, minValue);
+            if(localBeta <= alpha) {
+                break;
+            }
         }
         return minValue;
     }
