@@ -45,9 +45,6 @@ public class DebugPlayerMain {
 
         while (!isTerminating(wrangler.getBoard(), wrangler.getNumWin(), Board.PLAYER)) {
             wrangler.waitForOpponent();
-
-
-
             wrangler.declareMove(getActionFromPrompt());
         }
     }

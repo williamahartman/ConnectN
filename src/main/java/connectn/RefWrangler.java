@@ -47,8 +47,7 @@ public class RefWrangler {
     public void waitForOpponent() {
         int column = scanner.nextInt();
         int moveType = scanner.nextInt();
-        Action opponentAction = Action.get(Board.OPPONENT, column, moveType);
-        board = board.move(Action.get(board.OPPONENT, column, moveType));
+        board = board.move(Action.get(Board.OPPONENT, column, moveType));
     }
 
     public Board getBoard() {

@@ -5,7 +5,7 @@ package connectn;
  */
 public class Main {
 
-    private static final int NAME_LENGHT = 10;
+    private static final int NAME_LENGTH = 10;
 
 
     public static void main(String[] args) {
@@ -21,7 +21,7 @@ public class Main {
             wrangler.declareMove(move);
         }
 
-        for (int i = 0; i < 100; i++){
+        while (!player.isTerminating(wrangler.getBoard(), Board.PLAYER)) {
             wrangler.waitForOpponent();
             Action move = player.makeMove(wrangler.getBoard());
             wrangler.declareMove(move);
@@ -30,7 +30,7 @@ public class Main {
 
     public static String generateName(){
         String name = "";
-        while(name.length() < NAME_LENGHT){
+        while(name.length() < NAME_LENGTH){
             name += String.valueOf((int)(Math.random()*10));
         }
         return name;
