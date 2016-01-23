@@ -1,4 +1,4 @@
-package test;
+package connectn;
 
 
 import connectn.Action;

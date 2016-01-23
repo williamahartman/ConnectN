@@ -7,8 +7,8 @@ apply plugin: 'java'
 targetCompatibility = 1.8
 
 task run(type: JavaExec) {
+    main = 'connectn.Main'
     classpath = sourceSets.main.runtimeClasspath
-    main = 'Main'
     standardInput = System.in
 }
 
@@ -17,14 +17,14 @@ repositories {
 }
 
 dependencies {
-
+    testCompile 'junit:junit:4.12'
 }
 
 task dist(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Gradle Jar File Example',
                 'Implementation-Version': version,
-                'Main-Class': 'Main'
+                'Main-Class': 'connectn.Main'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
