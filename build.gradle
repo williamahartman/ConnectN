@@ -32,3 +32,15 @@ task dist(type: Jar) {
     with jar
 }
 
+task distdebug(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'debugplayer.DebugPlayerMain'
+    }
+    baseName = project.name + '-DEBUG'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    with jar
+}
+
