@@ -122,7 +122,7 @@ public class Board {
         //iterate over every position
         for(int x = 0; x < width; x++){
             //only need to check vertically until the first empty spot
-            for(int y = 0; state[x][y] != EMPTY && y < height; y++){
+            for(int y = 0; y < height && state[x][y] != EMPTY; y++){
                 //check if the position contains the player's piece, and if a matching region would fit in the board
                 if(state[x][y] == player && checkBounds(x + (length-1)*dx, y + (length-1)*dy)){
                     boolean region = true;

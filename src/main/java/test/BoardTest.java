@@ -68,8 +68,20 @@ public class BoardTest {
 
     @Test
     public void testCountRegions(){
+        Board board4 = new Board(new byte[][]{
+                {1,1,2,1},
+                {1,1,1,2},
+                {1,1,2,2},
+                {1,1,1,1},
+        }, true, true);
+
+        assertEquals(4, board4.countRegions(Board.PLAYER, 4));
+    }
+
+    @Test
+    public void testCountRegionsDirectional(){
         Board empty = new Board(width, height);
-        assertEquals(0, empty.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, numWin));
+        assertEquals(0, empty.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, numWin));
 
         Board region3 = empty
                 .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
@@ -78,9 +90,9 @@ public class BoardTest {
 
         //Util.printBoard(region3);
 
-        assertEquals(0, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 1));
-        assertEquals(0, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 2));
-        assertEquals(1, region3.countRegions(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 3));
+        assertEquals(0, region3.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 1));
+        assertEquals(0, region3.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 2));
+        assertEquals(1, region3.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, 3));
 
         Board region4 = region3
                 .move(Action.get(Board.PLAYER, 2, Action.MOVE_DROP))
@@ -90,12 +102,12 @@ public class BoardTest {
 
         //Util.printBoard(region4);
 
-        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 1));
-        assertEquals(0, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 3));
-        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_VERTICAL, 4));
-        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_POSITIVE, 2));
-        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 2));
-        assertEquals(1, region4.countRegions(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 3));
+        assertEquals(1, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_VERTICAL, 1));
+        assertEquals(0, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_VERTICAL, 3));
+        assertEquals(1, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_VERTICAL, 4));
+        assertEquals(1, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_DIAGONAL_POSITIVE, 2));
+        assertEquals(1, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 2));
+        assertEquals(1, region4.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, 3));
     }
 
     @Test
