@@ -15,7 +15,7 @@ public class Player {
     }
 
     public Action makeMove(Board board) {
-        Action playerMove = minimax(board, 3);
+        Action playerMove = minimax(board, 5);
         return playerMove;
     }
 
@@ -53,13 +53,14 @@ public class Player {
             return heuristic(board);
         }
 
-        int localAlpha;
+        int localAlpha = alpha;
         int maxValue = Integer.MIN_VALUE;
 
         for(Action action:board.getActions(Board.PLAYER)){
-            maxValue = Math.max(maxValue, min(board.move(action), alpha, beta, currentDepth+1, maxDepth));
-            localAlpha = Math.max(alpha, maxValue);
+            maxValue = Math.max(maxValue, min(board.move(action), localAlpha, beta, currentDepth+1, maxDepth));
+            localAlpha = Math.max(localAlpha, maxValue);
             if(beta <= localAlpha) {
+                DebugPrinter.println("Pruning branch (val: " + maxValue + ", alpha: " + localAlpha + ", beta: " + beta + ")");
                 break;
             }
         }
@@ -71,13 +72,14 @@ public class Player {
             return heuristic(board);
         }
 
-        int localBeta;
+        int localBeta = beta;
         int minValue = Integer.MAX_VALUE;
 
         for(Action action: board.getActions(Board.OPPONENT)){
-            minValue = Math.min(minValue, max(board.move(action), alpha, beta, currentDepth + 1, maxDepth));
-            localBeta = Math.min(beta, minValue);
+            minValue = Math.min(minValue, max(board.move(action), alpha, localBeta, currentDepth + 1, maxDepth));
+            localBeta = Math.min(localBeta, minValue);
             if(localBeta <= alpha) {
+                DebugPrinter.println("Pruning branch (val: " + minValue + ", alpha: " + alpha + ", beta: " + localBeta + ")");
                 break;
             }
         }
