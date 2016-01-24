@@ -12,6 +12,26 @@ task run(type: JavaExec) {
     standardInput = System.in
 }
 
+task runref << {
+    File refJar = file('Referee.jar')
+    File aiJar = file('build/libs/ConnectN-1.0-SNAPSHOT.jar')
+    File debugJar = file('build/libs/ConnectN-DEBUG-1.0-SNAPSHOT.jar')
+
+    ProcessBuilder pb = new ProcessBuilder("java",
+            "-jar", refJar.absolutePath,
+            "java -jar " + aiJar.absolutePath + "",
+            "java -jar " + debugJar.absolutePath + "",
+            "6", "7", "3", "10", "10"
+    )
+
+    pb.redirectOutput(ProcessBuilder.Redirect.INHERIT)
+    pb.redirectError(ProcessBuilder.Redirect.INHERIT)
+    pb.start().waitFor();
+}
+runref.dependsOn {
+    tasks.findAll { task -> task.name.startsWith('dist') }
+}
+
 repositories {
     mavenCentral()
 }
@@ -26,7 +46,7 @@ task dist(type: Jar) {
                 'Implementation-Version': version,
                 'Main-Class': 'connectn.Main'
     }
-    baseName = project.name + '-all'
+    baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     with jar
