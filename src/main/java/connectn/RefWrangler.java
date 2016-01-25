@@ -42,7 +42,7 @@ public class RefWrangler {
 
         playingFirst = firstPlayer == playerNumber;
 
-        board = new Board(boardWidth, boardHeight);
+        board = new Board(boardWidth, boardHeight, numWin);
     }
 
     public void waitForOpponent() {

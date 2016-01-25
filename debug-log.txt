@@ -1,3 +1,1 @@
-Starting game at Sun Jan 24 22:40:15 EST 2016
-Width: 7
-Width: 7
+Starting game at Sun Jan 24 23:36:56 EST 2016

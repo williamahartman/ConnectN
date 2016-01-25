@@ -28,7 +28,7 @@ public class BoardTest {
 
     @Test
     public void testMoveDrop(){
-        Board empty = new Board(width, height);
+        Board empty = new Board(width, height, 4);
         assertArrayEquals(new byte[][]{
                 {0,0,0,0,0,0},
                 {0,0,0,0,0,0},
@@ -73,7 +73,7 @@ public class BoardTest {
                 {1,1,1,2},
                 {1,1,2,2},
                 {1,1,1,1},
-        }, true, true);
+        }, true, true, 4);
 
         assertEquals(4, board4.countRegions(Board.PLAYER, 4, 4));
 
@@ -84,14 +84,14 @@ public class BoardTest {
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
-        }, true, true);
+        }, true, true, 4);
         Util.printBoard(board5);
         assertEquals(4, board5.countRegions(Board.PLAYER, 1, 4));
     }
 
     @Test
     public void testCountRegionsDirectional(){
-        Board empty = new Board(width, height);
+        Board empty = new Board(width, height, 4);
         assertEquals(0, empty.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, numWin, 4));
 
         Board region3 = empty
@@ -123,7 +123,7 @@ public class BoardTest {
 
     @Test
     public void testGetActions(){
-        Board empty = new Board(width, height);
+        Board empty = new Board(width, height, 4);
         assertEquals(width, empty.getActions(Board.PLAYER).size());
 
         Board pop2 = empty

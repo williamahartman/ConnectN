@@ -16,7 +16,7 @@ public class Player {
 
     public Action makeMove(Board board) {
         //Action playerMove = minimax(board, 5, new Flag());
-        IterativeDeepener deepener = new IterativeDeepener(this, 5, 2);
+        IterativeDeepener deepener = new IterativeDeepener(this, 3, 1);
         return deepener.makeMove(board);
     }
 

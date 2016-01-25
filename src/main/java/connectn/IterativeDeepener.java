@@ -46,6 +46,8 @@ public class IterativeDeepener{
         Action finalAction = bestAction;
         stopFlag.set(true);
 
+        //System.out.println("TIMEOUT");
+
         for(int i = 0; i < THREAD_COUNT; i++){
             try {
                 minimaxThreads[i].join();
@@ -75,8 +77,8 @@ public class IterativeDeepener{
                     maxDepth += stepDepth;
                 }
 
-                System.out.println("starting with "+depth);
-                Stopwatch.start("Minimax("+depth+")");
+                //System.out.println("starting with "+depth);
+                //Stopwatch.start("Minimax("+depth+")");
                 Action action = player.minimax(board, depth, stopFlag);
 
                 if(!stopFlag.get()) {
@@ -87,7 +89,7 @@ public class IterativeDeepener{
                         }
                     }
                 }
-                Stopwatch.stop("Minimax("+depth+")");
+                //Stopwatch.stop("Minimax("+depth+")");
             }
 
         }

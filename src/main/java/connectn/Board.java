@@ -21,6 +21,8 @@ public class Board {
     private static final int[] DX = {0, 1, 1, 1};
     private static final int[] DY = {1, 0, 1, -1};
 
+    private final int numWin;
+
     private final boolean playerCanPop;
     private final boolean opponentCanPop;
 
@@ -28,20 +30,23 @@ public class Board {
     private final int height;
     private final byte[][] state;
 
-    public Board(int width, int height) {
-        this(new byte[width][height], true, true);
+
+
+    public Board(int width, int height, int numWin) {
+        this(new byte[width][height], true, true, numWin);
     }
 
     public Board(Board base) {
-        this(base.copyState(), base.playerCanPop, base.opponentCanPop);
+        this(base.copyState(), base.playerCanPop, base.opponentCanPop, base.numWin);
     }
 
-    public Board(byte[][] state, boolean playerCanPop, boolean opponentCanPop) {
+    public Board(byte[][] state, boolean playerCanPop, boolean opponentCanPop, int numWin) {
         this.state = state;
         this.width = state.length;
         this.height = state[0].length;
         this.playerCanPop = playerCanPop;
         this.opponentCanPop = opponentCanPop;
+        this.numWin = numWin;
     }
 
     public Board move(Action action) {
@@ -70,7 +75,7 @@ public class Board {
                 opponentPop = false;
             }
         }
-        return new Board(newState, playerPop, opponentPop);
+        return new Board(newState, playerPop, opponentPop, numWin);
     }
 
     /**
@@ -97,6 +102,7 @@ public class Board {
 
         return actions;
     }
+
 
     public int countRegions(byte player, int length, int numWin){
         return countRegionsDirectional(player, DIRECTION_HORIZONTAL, length, numWin)
