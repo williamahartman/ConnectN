@@ -89,10 +89,28 @@ public class Player {
     public int heuristic(Board board) {
         int value = 0;
 
+        DebugPrinter.println("Width: " + board.getWidth());
+        DebugPrinter.println("Centerness: " + countCenterness(Board.PLAYER, board.copyState()));
+
         for(int i = 1; i < numWin; i++){
             value += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
             value -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
         }
         return value;
+    }
+
+    private double countCenterness(byte playerTurn, byte[][] boardState) {
+        double centerness = 0;
+        for(int i = 0; i < boardState[0].length; i++) {
+            int tallyInColumn = 0;
+            for(int j = 0; j < boardState.length; j++) {
+                if(boardState[i][j] == playerTurn) {
+                    tallyInColumn++;
+                }
+            }
+            centerness += tallyInColumn * (i + 1);
+        }
+
+        return centerness / boardState[0].length;
     }
 }
