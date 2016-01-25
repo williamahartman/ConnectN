@@ -1,5 +1,6 @@
 package connectn;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -45,9 +46,13 @@ public class RefWrangler {
     }
 
     public void waitForOpponent() {
-        int column = scanner.nextInt();
-        int moveType = scanner.nextInt();
-        board = board.move(Action.get(Board.OPPONENT, column, moveType));
+        try {
+            int column = scanner.nextInt();
+            int moveType = scanner.nextInt();
+            board = board.move(Action.get(Board.OPPONENT, column, moveType));
+        } catch (InputMismatchException e) {
+            System.err.println("Unexpected output from ref!");
+        }
     }
 
     public Board getBoard() {
