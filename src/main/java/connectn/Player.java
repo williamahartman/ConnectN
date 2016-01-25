@@ -45,6 +45,7 @@ public class Player {
         for(Action action: board.getActions(Board.PLAYER)) {
             int childValue = min(board.move(action), Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth);
             if(childValue >= currentBestHeuristic) {
+                currentBestHeuristic = childValue;
                 currentBestAction = action;
             }
         }
@@ -91,6 +92,12 @@ public class Player {
     public int heuristic(Board board) {
         int value = 0;
 
+        if (board.countRegions(Board.PLAYER, numWin, numWin) > 0){
+            return Integer.MAX_VALUE;
+        } else if (board.countRegions(Board.OPPONENT, numWin, numWin) > 0){
+            return Integer.MIN_VALUE;
+        }
+
         //Add value of centerness
         double playerCenterness = countCenterness(Board.PLAYER, board.copyState());
         double opponeentCenterness = countCenterness(Board.OPPONENT, board.copyState());
@@ -103,8 +110,8 @@ public class Player {
         //Add value for chains of pieces
         int chainVal = 0;
         for(int i = 2; i < numWin; i++){
-            chainVal += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
-            chainVal -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
+            chainVal += board.countRegions(Board.PLAYER, i, numWin) * Math.pow(i, 3);
+            chainVal -= board.countRegions(Board.OPPONENT, i, numWin) * Math.pow(i, 3);
         }
         value += chainVal;
 

@@ -90,7 +90,7 @@ public class Board {
         if((player == PLAYER && playerCanPop) || (player == OPPONENT && opponentCanPop)){
             for(int i = 0; i < width; i++){
                 if(state[i][0] == player){
-                    actions.add(Action.get(player, i, Action.MOVE_POP));
+                    //actions.add(Action.get(player, i, Action.MOVE_POP));
                 }
             }
         }
