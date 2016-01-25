@@ -76,6 +76,17 @@ public class BoardTest {
         }, true, true);
 
         assertEquals(4, board4.countRegions(Board.PLAYER, 4, 4));
+
+        Board board5 = new Board(new byte[][]{
+                {1, 2, 1, 2, 1, 2},
+                {0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+        }, true, true);
+        Util.printBoard(board5);
+        assertEquals(4, board5.countRegions(Board.PLAYER, 1, 4));
     }
 
     @Test

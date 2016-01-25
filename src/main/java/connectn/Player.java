@@ -1,7 +1,5 @@
 package connectn;
 
-import java.rmi.activation.ActivationID;
-
 /**
  * Created by will on 1/21/16.
  */
@@ -17,7 +15,7 @@ public class Player {
     }
 
     public Action makeMove(Board board) {
-        Action playerMove = minimax(board, 5);
+        Action playerMove = minimax(board, 6);
 
         DebugPrinter.print(playerMove.moveType == Action.MOVE_DROP ? "Dropping on " : "Popping at ");
         DebugPrinter.println("column " + playerMove.column);
@@ -98,18 +96,21 @@ public class Player {
         double opponeentCenterness = countCenterness(Board.OPPONENT, board.copyState());
 
         double centernessAdjustPlayer = (1 / (Math.abs(playerCenterness - board.getWidth() / 2.0))) * 25;
-        double centernessAdjustOpponent = (1 / (Math.abs(opponeentCenterness - board.getWidth() / 2.0))) * 25;
+        double centernessAdjustOpponent = (1 / (Math.abs(opponeentCenterness - board.getWidth() / 2.0))) * -25;
         value += centernessAdjustPlayer;
         value += centernessAdjustOpponent;
 
         //Add value for chains of pieces
-        for(int i = 1; i < numWin; i++){
-            value += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
-            value -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
+        int chainVal = 0;
+        for(int i = 2; i < numWin; i++){
+            chainVal += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
+            chainVal -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
         }
+        value += chainVal;
 
         //Debug prints
         DebugPrinter.println(Util.boardString(board));
+        DebugPrinter.println("\tValue from regions: " + chainVal);
         DebugPrinter.println("\tCenterness adjust player: " + centernessAdjustPlayer);
         DebugPrinter.println("\tCenterness adjust opponent: " + centernessAdjustOpponent);
         DebugPrinter.println("\tFinal value: " + value);
