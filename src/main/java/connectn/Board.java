@@ -152,7 +152,6 @@ public class Board {
                             boolean beforeIncluded = (checkBounds(xBefore, yBefore) && state[xBefore][yBefore] == player);
                             boolean afterIncluded = (checkBounds(xAfter, yAfter) && state[xAfter][yAfter] == player);
 
-
                             if (!(beforeIncluded || afterIncluded) && (beforeOpen || afterOpen)) {
                                 count++;
                             }

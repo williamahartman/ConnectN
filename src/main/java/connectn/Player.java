@@ -66,7 +66,6 @@ public class Player {
             maxValue = Math.max(maxValue, min(board.move(action), localAlpha, beta, currentDepth+1, maxDepth));
             localAlpha = Math.max(localAlpha, maxValue);
             if(beta <= localAlpha) {
-                DebugPrinter.println("Pruning branch (val: " + maxValue + ", alpha: " + localAlpha + ", beta: " + beta + ")");
                 break;
             }
         }
@@ -85,7 +84,6 @@ public class Player {
             minValue = Math.min(minValue, max(board.move(action), alpha, localBeta, currentDepth + 1, maxDepth));
             localBeta = Math.min(localBeta, minValue);
             if(localBeta <= alpha) {
-                DebugPrinter.println("Pruning branch (val: " + minValue + ", alpha: " + alpha + ", beta: " + localBeta + ")");
                 break;
             }
         }
@@ -95,20 +93,28 @@ public class Player {
     public int heuristic(Board board) {
         int value = 0;
 
+        //Add value of centerness
         double playerCenterness = countCenterness(Board.PLAYER, board.copyState());
         double opponeentCenterness = countCenterness(Board.OPPONENT, board.copyState());
-        double boardCenter = board.getWidth() / 2.0;
 
-        DebugPrinter.println("\tCenterness adjust player: " + (Math.abs(playerCenterness - boardCenter) / boardCenter) * 0.5);
-        DebugPrinter.println("\tCenterness adjust player: " + (Math.abs(playerCenterness - boardCenter) / boardCenter) * -0.5);
+        double centernessAdjustPlayer = (1 / (Math.abs(playerCenterness - board.getWidth() / 2.0))) * 25;
+        double centernessAdjustOpponent = (1 / (Math.abs(opponeentCenterness - board.getWidth() / 2.0))) * 25;
+        value += centernessAdjustPlayer;
+        value += centernessAdjustOpponent;
 
-        value += (Math.abs(playerCenterness - boardCenter) / boardCenter) * 0.5;
-        value += (Math.abs(opponeentCenterness - boardCenter) / boardCenter) * -0.5;
-
+        //Add value for chains of pieces
         for(int i = 1; i < numWin; i++){
             value += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
             value -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
         }
+
+        //Debug prints
+        DebugPrinter.println(Util.boardString(board));
+        DebugPrinter.println("\tCenterness adjust player: " + centernessAdjustPlayer);
+        DebugPrinter.println("\tCenterness adjust opponent: " + centernessAdjustOpponent);
+        DebugPrinter.println("\tFinal value: " + value);
+        DebugPrinter.println("");
+
         return value;
     }
 
