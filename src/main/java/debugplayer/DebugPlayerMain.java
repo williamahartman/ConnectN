@@ -13,7 +13,10 @@ public class DebugPlayerMain {
     public static Action getActionFromPrompt() {
         String s = (String) JOptionPane.showInputDialog(
                 null,
-                "Enter a command (column + move type)",
+                "<html>Enter a command (column + move type)." +
+                        "<br>Drop - 1" +
+                        "<br>Pop - 0" +
+                        "<html/>",
                 "Debug player",
                 JOptionPane.PLAIN_MESSAGE,
                 null,
