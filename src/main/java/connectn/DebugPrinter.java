@@ -14,7 +14,7 @@ public class DebugPrinter {
     static {
         try {
             DebugPrinter.writer = new PrintWriter(DEBUG_FILE_PATH, "UTF-8");
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

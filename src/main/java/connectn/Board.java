@@ -2,6 +2,7 @@ package connectn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Created by Akshay on 1/21/2016.
@@ -97,11 +98,11 @@ public class Board {
         return actions;
     }
 
-    public int countRegions(byte player, int length){
-        return countRegionsDirectional(player, DIRECTION_HORIZONTAL, length)
-                + countRegionsDirectional(player, DIRECTION_VERTICAL, length)
-                + countRegionsDirectional(player, DIRECTION_DIAGONAL_POSITIVE, length)
-                + countRegionsDirectional(player, DIRECTION_DIAGONAL_NEGATIVE, length);
+    public int countRegions(byte player, int length, int numWin){
+        return countRegionsDirectional(player, DIRECTION_HORIZONTAL, length, numWin)
+                + countRegionsDirectional(player, DIRECTION_VERTICAL, length, numWin)
+                + countRegionsDirectional(player, DIRECTION_DIAGONAL_POSITIVE, length, numWin)
+                + countRegionsDirectional(player, DIRECTION_DIAGONAL_NEGATIVE, length, numWin);
     }
 
     /**
@@ -111,14 +112,13 @@ public class Board {
      * @param length
      * @return
      */
-    public int countRegionsDirectional(byte player, int direction, int length){
+    public int countRegionsDirectional(byte player, int direction, int length, int numWin){
         //get director vector
         int dx = DX[direction];
         int dy = DY[direction];
 
         //count to regions found
         int count = 0;
-
         //iterate over every position
         for(int x = 0; x < width; x++){
             //only need to check vertically until the first empty spot
@@ -135,18 +135,27 @@ public class Board {
                         }
                     }
 
-                    if(region) {
-                        //check that region is not part of a larger region
-                        //if the slot before or after the region has a piece, it is part of a larger region and should not be counted
-                        int xBefore = x - dx;
-                        int yBefore = y - dy;
-                        int xAfter = x + length * dx;
-                        int yAfter = y + length * dy;
-                        boolean beforeNotIncluded = (!checkBounds(xBefore, yBefore) || state[xBefore][yBefore] != player);
-                        boolean afterNotIncluded = (!checkBounds(xAfter, yAfter) || state[xAfter][yAfter] != player);
 
-                        if (beforeNotIncluded && afterNotIncluded) {
+                    if(region) {
+                        if(length == numWin){
                             count++;
+                        } else {
+                            //check that region is not part of a larger region
+                            //if the slot before or after the region has a piece, it is part of a larger region and should not be counted
+                            int xBefore = x - dx;
+                            int yBefore = y - dy;
+                            int xAfter = x + length * dx;
+                            int yAfter = y + length * dy;
+
+                            boolean beforeOpen = (checkBounds(xBefore, yBefore) && state[xBefore][xAfter] == EMPTY);
+                            boolean afterOpen = (checkBounds(xAfter, yAfter) && state[xAfter][yAfter] == EMPTY);
+                            boolean beforeIncluded = (checkBounds(xBefore, yBefore) && state[xBefore][yBefore] == player);
+                            boolean afterIncluded = (checkBounds(xAfter, yAfter) && state[xAfter][yAfter] == player);
+
+
+                            if (!(beforeIncluded || afterIncluded) && (beforeOpen || afterOpen)) {
+                                count++;
+                            }
                         }
                     }
                 }

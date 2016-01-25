@@ -26,8 +26,8 @@ public class Player {
      * @return
      */
     public boolean isTerminating(Board board, byte player){
-        return board.countRegions(Board.PLAYER, numWin) > 0
-                || board.countRegions(Board.OPPONENT, numWin) > 0
+        return board.countRegions(Board.PLAYER, numWin, numWin) > 0
+                || board.countRegions(Board.OPPONENT, numWin, numWin) > 0
                 || board.getActions(player).size() == 0;
     }
 
@@ -90,8 +90,8 @@ public class Player {
         int value = 0;
 
         for(int i = 1; i < numWin; i++){
-            value += Math.pow(board.countRegions(Board.PLAYER, i), 3);
-            value -= Math.pow(board.countRegions(Board.OPPONENT, i), 3);
+            value += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
+            value -= Math.pow(board.countRegions(Board.OPPONENT, i, numWin), 3);
         }
         return value;
     }

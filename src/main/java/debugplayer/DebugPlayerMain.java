@@ -27,8 +27,8 @@ public class DebugPlayerMain {
     }
 
     public static boolean isTerminating(Board board, int numWin, byte player){
-        return board.countRegions(Board.PLAYER, numWin) > 0
-                || board.countRegions(Board.OPPONENT, numWin) > 0
+        return board.countRegions(Board.PLAYER, numWin, numWin) > 0
+                || board.countRegions(Board.OPPONENT, numWin, numWin) > 0
                 || board.getActions(player).size() == 0;
     }
 
