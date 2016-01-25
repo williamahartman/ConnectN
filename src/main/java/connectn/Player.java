@@ -5,8 +5,8 @@ package connectn;
  */
 public class Player {
 
-    private int numWin;
-    private long timeLimit;
+    public final int numWin;
+    public final long timeLimit;
 
 
     public Player(int numWin, long timeLimit){
@@ -15,8 +15,9 @@ public class Player {
     }
 
     public Action makeMove(Board board) {
-        Action playerMove = minimax(board, 5);
-        return playerMove;
+        //Action playerMove = minimax(board, 5, new Flag());
+        IterativeDeepener deepener = new IterativeDeepener(this, 5, 2);
+        return deepener.makeMove(board);
     }
 
     /**
@@ -31,7 +32,7 @@ public class Player {
                 || board.getActions(player).size() == 0;
     }
 
-    public Action minimax(Board board, int maxDepth) {
+    public Action minimax(Board board, int maxDepth, Flag stopFlag) {
         if(isTerminating(board, Board.PLAYER)) {
             throw new RuntimeException("No possible moves. The game is already a draw!");
         }
@@ -39,7 +40,7 @@ public class Player {
         int currentBestHeuristic = Integer.MIN_VALUE;
         Action currentBestAction = null;
         for(Action action: board.getActions(Board.PLAYER)) {
-            int childValue = min(board.move(action), Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth);
+            int childValue = min(board.move(action), Integer.MIN_VALUE, Integer.MAX_VALUE, 1, maxDepth, stopFlag);
             if(childValue >= currentBestHeuristic) {
                 currentBestAction = action;
             }
@@ -48,7 +49,7 @@ public class Player {
         return currentBestAction;
     }
 
-    private int max(Board board, int alpha, int beta, int currentDepth, int maxDepth){
+    private int max(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.PLAYER)){
             return heuristic(board);
         }
@@ -57,17 +58,21 @@ public class Player {
         int maxValue = Integer.MIN_VALUE;
 
         for(Action action:board.getActions(Board.PLAYER)){
-            maxValue = Math.max(maxValue, min(board.move(action), localAlpha, beta, currentDepth+1, maxDepth));
+            maxValue = Math.max(maxValue, min(board.move(action), localAlpha, beta, currentDepth+1, maxDepth, stopFlag));
             localAlpha = Math.max(localAlpha, maxValue);
             if(beta <= localAlpha) {
                 DebugPrinter.println("Pruning branch (val: " + maxValue + ", alpha: " + localAlpha + ", beta: " + beta + ")");
                 break;
             }
+
+            if(stopFlag.get()){
+                return 0;
+            }
         }
         return maxValue;
     }
 
-    private int min(Board board, int alpha, int beta, int currentDepth, int maxDepth){
+    private int min(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.OPPONENT)){
             return heuristic(board);
         }
@@ -76,12 +81,17 @@ public class Player {
         int minValue = Integer.MAX_VALUE;
 
         for(Action action: board.getActions(Board.OPPONENT)){
-            minValue = Math.min(minValue, max(board.move(action), alpha, localBeta, currentDepth + 1, maxDepth));
+            minValue = Math.min(minValue, max(board.move(action), alpha, localBeta, currentDepth + 1, maxDepth, stopFlag));
             localBeta = Math.min(localBeta, minValue);
             if(localBeta <= alpha) {
                 DebugPrinter.println("Pruning branch (val: " + minValue + ", alpha: " + alpha + ", beta: " + localBeta + ")");
                 break;
             }
+
+            if(stopFlag.get()){
+                return 0;
+            }
+
         }
         return minValue;
     }
