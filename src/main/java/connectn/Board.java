@@ -147,7 +147,7 @@ public class Board {
                             int xAfter = x + length * dx;
                             int yAfter = y + length * dy;
 
-                            boolean beforeOpen = (checkBounds(xBefore, yBefore) && state[xBefore][xAfter] == EMPTY);
+                            boolean beforeOpen = (checkBounds(xBefore, yBefore) && state[xBefore][yBefore] == EMPTY);
                             boolean afterOpen = (checkBounds(xAfter, yAfter) && state[xAfter][yAfter] == EMPTY);
                             boolean beforeIncluded = (checkBounds(xBefore, yBefore) && state[xBefore][yBefore] == player);
                             boolean afterIncluded = (checkBounds(xAfter, yAfter) && state[xAfter][yAfter] == player);

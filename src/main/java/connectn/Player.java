@@ -1,5 +1,7 @@
 package connectn;
 
+import java.rmi.activation.ActivationID;
+
 /**
  * Created by will on 1/21/16.
  */
@@ -16,6 +18,10 @@ public class Player {
 
     public Action makeMove(Board board) {
         Action playerMove = minimax(board, 5);
+
+        DebugPrinter.print(playerMove.moveType == Action.MOVE_DROP ? "Dropping on " : "Popping at ");
+        DebugPrinter.println("column " + playerMove.column);
+
         return playerMove;
     }
 
@@ -89,8 +95,15 @@ public class Player {
     public int heuristic(Board board) {
         int value = 0;
 
-        DebugPrinter.println("Width: " + board.getWidth());
-        DebugPrinter.println("Centerness: " + countCenterness(Board.PLAYER, board.copyState()));
+        double playerCenterness = countCenterness(Board.PLAYER, board.copyState());
+        double opponeentCenterness = countCenterness(Board.OPPONENT, board.copyState());
+        double boardCenter = board.getWidth() / 2.0;
+
+        DebugPrinter.println("\tCenterness adjust player: " + (Math.abs(playerCenterness - boardCenter) / boardCenter) * 0.5);
+        DebugPrinter.println("\tCenterness adjust player: " + (Math.abs(playerCenterness - boardCenter) / boardCenter) * -0.5);
+
+        value += (Math.abs(playerCenterness - boardCenter) / boardCenter) * 0.5;
+        value += (Math.abs(opponeentCenterness - boardCenter) / boardCenter) * -0.5;
 
         for(int i = 1; i < numWin; i++){
             value += Math.pow(board.countRegions(Board.PLAYER, i, numWin), 3);
@@ -101,9 +114,9 @@ public class Player {
 
     private double countCenterness(byte playerTurn, byte[][] boardState) {
         double centerness = 0;
-        for(int i = 0; i < boardState[0].length; i++) {
+        for(int i = 0; i < boardState.length; i++) {
             int tallyInColumn = 0;
-            for(int j = 0; j < boardState.length; j++) {
+            for(int j = 0; j < boardState[0].length; j++) {
                 if(boardState[i][j] == playerTurn) {
                     tallyInColumn++;
                 }
