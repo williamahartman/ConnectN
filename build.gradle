@@ -21,7 +21,7 @@ task runref << {
             "-jar", refJar.absolutePath,
             "java -jar " + aiJar.absolutePath + "",
             "java -jar " + debugJar.absolutePath + "",
-            "6", "7", "3", "10", "10"
+            "6", "7", "4", "10", "120"
     )
 
     pb.redirectOutput(ProcessBuilder.Redirect.INHERIT)

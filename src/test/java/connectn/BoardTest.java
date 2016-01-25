@@ -77,16 +77,34 @@ public class BoardTest {
 
         assertEquals(4, board4.countRegions(Board.PLAYER, 4, 4));
 
-        Board board5 = new Board(new byte[][]{
-                {1, 2, 1, 2, 1, 2},
-                {0, 0, 0, 0, 0, 0},
+//        Board board5 = new Board(new byte[][]{
+//                {1, 2, 1, 2, 1, 2},
+//                {0, 0, 0, 0, 0, 0},
+//                {1, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0},
+//        }, true, true);
+//        Util.printBoard(board5);
+//        assertEquals(4, board5.countRegions(Board.PLAYER, 1, 4));
+
+        Board board6 = new Board(new byte[][]{
+                {1, 2, 1, 2, 0, 0},
                 {1, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
+<<<<<<< HEAD
         }, true, true, 4);
         Util.printBoard(board5);
         assertEquals(4, board5.countRegions(Board.PLAYER, 1, 4));
+=======
+                {0, 0, 0, 0, 0, 0},
+                {2, 0, 0, 0, 0, 0},
+        }, true, true);
+        Util.printBoard(board6);
+        assertEquals(1, board6.countRegions(Board.PLAYER, 2, 4));
+>>>>>>> 45da2d168bd55553a7bb28024998d2d96b936964
     }
 
     @Test
@@ -148,6 +166,23 @@ public class BoardTest {
 
         assertEquals(6, playerActions.size());
         assertEquals(6, oppActions.size());
+
+        Board board7 = new Board(new byte[][]{
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {2, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {1, 2, 0, 0, 0, 0},
+        }, true, true);
+
+        Player p = new Player(4, 0);
+        for(Action a: board7.getActions(Board.PLAYER)) {
+            System.out.println(a.column + (a.moveType == Action.MOVE_DROP ? " Drop" : " Pop"));
+            System.out.println("Heuristic Val: " + p.heuristic(board7.move(a)));
+            System.out.println();
+        }
     }
 
 }
