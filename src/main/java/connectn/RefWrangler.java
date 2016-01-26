@@ -10,6 +10,9 @@ William Hartman
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Handle communication with the referee
+ */
 public class RefWrangler {
 
     private Scanner scanner;

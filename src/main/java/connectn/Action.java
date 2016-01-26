@@ -7,6 +7,10 @@ Akshay Thejaswi
 William Hartman
  */
 
+/**
+ * This class describes possible moves on a connect 4 board. There are a pretty small number of possible moves,
+ * and these are reused a lot, so they are stored statically.
+ */
 public class Action {
 
     public static final int MOVE_DROP = 1;
@@ -16,7 +20,7 @@ public class Action {
     private static Action[][][] actions;
 
     public static void initActions(int width){
-        actions = new Action[2][7][2];
+        actions = new Action[2][width][2];
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < width; j++){

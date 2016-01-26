@@ -13,7 +13,7 @@ public class Main {
     private static final int NAME_LENGTH = 10;
 
     public static void main(String[] args) {
-        DebugPrinter.println("Starting game at " + new Date().toString());
+        //DebugPrinter.println("Starting game at " + new Date().toString());
 
         String name = generateName();
         RefWrangler wrangler = new RefWrangler(name);

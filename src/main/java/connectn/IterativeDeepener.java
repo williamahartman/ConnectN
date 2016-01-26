@@ -7,6 +7,9 @@ Akshay Thejaswi
 William Hartman
  */
 
+/**
+ * Handles running progressively deeper versions of minimax on multiple threads.
+ */
 public class IterativeDeepener{
 
     private final long TIME_LIMIT_BUFFER = 250;

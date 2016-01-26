@@ -7,6 +7,9 @@ Akshay Thejaswi
 William Hartman
  */
 
+/**
+ * The player class is the connect-N AI agent. It makes moves based on board state.
+ */
 public class Player {
 
     public final int numWin;
@@ -36,6 +39,14 @@ public class Player {
                 || board.getActions(player).size() == 0;
     }
 
+    /**
+     * Entry point for minimax
+     *
+     * @param board
+     * @param maxDepth
+     * @param stopFlag
+     * @return
+     */
     public Action minimax(Board board, int maxDepth, Flag stopFlag) {
         if(isTerminating(board, Board.PLAYER)) {
             throw new RuntimeException("No possible moves. The game is already a draw!");
@@ -56,7 +67,7 @@ public class Player {
 
     private int max(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.PLAYER)){
-            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
+//            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
             return heuristic(board);
         }
 
@@ -64,8 +75,11 @@ public class Player {
         int maxValue = Integer.MIN_VALUE;
 
         for(Action action:board.getActions(Board.PLAYER)){
+            //Search
             maxValue = Math.max(maxValue, min(board.move(action), localAlpha, beta, currentDepth+1, maxDepth, stopFlag));
             localAlpha = Math.max(localAlpha, maxValue);
+
+            //Prune
             if(beta <= localAlpha) {
                 break;
             }
@@ -79,7 +93,7 @@ public class Player {
 
     private int min(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.OPPONENT)){
-            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
+//            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
             return heuristic(board);
         }
 
@@ -87,8 +101,11 @@ public class Player {
         int minValue = Integer.MAX_VALUE;
 
         for(Action action: board.getActions(Board.OPPONENT)){
+            //Search
             minValue = Math.min(minValue, max(board.move(action), alpha, localBeta, currentDepth + 1, maxDepth, stopFlag));
             localBeta = Math.min(localBeta, minValue);
+
+            //Prune
             if(localBeta <= alpha) {
                 break;
             }
@@ -101,9 +118,23 @@ public class Player {
         return minValue;
     }
 
+    /**
+     * Return the value of the board.
+     *
+     * General ideas for the heuristic:
+     * - Detect wins
+     * - Reward keeping pieces towards the center (intentionally more important in the early game)
+     * - Reward chains of pieces
+     *      - Don't reward chains of 1
+     *      - Reward more for horizontal and diagonal chains since they are harder to block
+     *
+     * @param board
+     * @return
+     */
     public int heuristic(Board board) {
         int value = 0;
 
+        //Quickly return max or min values on wins
         if (board.countRegions(Board.PLAYER, numWin, numWin) > 0){
             return Integer.MAX_VALUE;
         }
@@ -142,12 +173,12 @@ public class Player {
         value += chainVal;
 
         //Debug prints
-        DebugPrinter.println(Util.boardString(board));
-        DebugPrinter.println("\tValue from regions: " + chainVal);
-        DebugPrinter.println("\tCenterness adjust player: " + centernessAdjustPlayer);
-        DebugPrinter.println("\tCenterness adjust opponent: " + centernessAdjustOpponent);
-        DebugPrinter.println("\tFinal value: " + value);
-        DebugPrinter.println("");
+//        DebugPrinter.println(Util.boardString(board));
+//        DebugPrinter.println("\tValue from regions: " + chainVal);
+//        DebugPrinter.println("\tCenterness adjust player: " + centernessAdjustPlayer);
+//        DebugPrinter.println("\tCenterness adjust opponent: " + centernessAdjustOpponent);
+//        DebugPrinter.println("\tFinal value: " + value);
+//        DebugPrinter.println("");
 
         return value;
     }

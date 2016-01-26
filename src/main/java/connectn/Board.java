@@ -11,6 +11,10 @@ Akshay Thejaswi
 William Hartman
  */
 
+/**
+ * The board class represents a given state in connect-N. Moves can be made (returning decendant boards),
+ * and information about the board can be computed.
+ */
 public class Board {
 
     public static final byte EMPTY = 0;
