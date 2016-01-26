@@ -26,10 +26,12 @@ clear.
 Referee Documentation:
 
 Running the ai should be very simple.
-The jar file '' is executable, and can be simply used with the referee as follows:
+The jar file 'hartman-thejaswi-connectn.jar' is executable, and can be simply used with the referee as follows:
 
-    Assuming the '' file is at the root of your C:\ drive. Substitute the path for the path to the '' file.
-    java -jar RefereeForDebug.jar "java -jar C:\" "command for 2nd ai" 6 7 4 10 10
+    java -jar RefereeForDebug.jar "java -jar C:\hartman-thejaswi-connectn.jar" "command for 2nd ai" 6 7 4 10 10
+
+    Assuming the 'hartman-thejaswi-connectn.jar' file is at the root of your C:\ drive. 
+    Substitute the path for the acutal path to the 'hartman-thejaswi-connectn.jar' file.
 
 The player name will be 10 random numbers (this was chosen to avoid any possible name conflicts)
 
@@ -40,7 +42,8 @@ We used gradle (http://gradle.org/) to build our project. It is possible to buil
 assume gradle is installed.
 
 1) Navigate to the source directory
-2) with gradle installed, run 'gradle dist'. This build a .jar file, which will be placed in build/libs/
+2) with gradle installed, run 'gradle dist'. This build an executable .jar file, which will be placed in build/libs/
+	- This .jar can be used with the referee, as detailed above.
 3) if you wish to run the AI with our manual debug player, run 'gradle runref'
 
 ---------
