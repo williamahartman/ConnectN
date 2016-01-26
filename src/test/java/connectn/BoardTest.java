@@ -110,7 +110,7 @@ public class BoardTest {
                 {1, 1, 1, 2, 1, 1},
         }, true, true, 4);
         Util.printBoard(board7);
-        assertEquals(1, board7.countRegions(Board.PLAYER, 4, 4));
+        assertEquals(1, board7.countRegions(Board.OPPONENT, 4, 4));
     }
 
     @Test
