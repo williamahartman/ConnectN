@@ -94,17 +94,23 @@ public class BoardTest {
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
-<<<<<<< HEAD
-        }, true, true, 4);
-        Util.printBoard(board5);
-        assertEquals(4, board5.countRegions(Board.PLAYER, 1, 4));
-=======
                 {0, 0, 0, 0, 0, 0},
                 {2, 0, 0, 0, 0, 0},
-        }, true, true);
+        }, true, true, 4);
         Util.printBoard(board6);
         assertEquals(1, board6.countRegions(Board.PLAYER, 2, 4));
->>>>>>> 45da2d168bd55553a7bb28024998d2d96b936964
+
+        Board board8 = new Board(new byte[][]{
+                {1, 2, 2, 2, 2, 0},
+                {1, 1, 1, 2, 1, 2},
+                {2, 0, 0, 0, 0, 0},
+                {2, 2, 2, 1, 2, 2},
+                {2, 0, 0, 0, 0, 0},
+                {1, 1, 1, 2, 1, 0},
+                {1, 1, 1, 2, 1, 1},
+        }, true, true, 4);
+        Util.printBoard(board8);
+        assertEquals(1, board8.countRegions(Board.PLAYER, 4, 4));
     }
 
     @Test
@@ -175,7 +181,7 @@ public class BoardTest {
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {1, 2, 0, 0, 0, 0},
-        }, true, true);
+        }, true, true, 4);
 
         Player p = new Player(4, 0);
         for(Action a: board7.getActions(Board.PLAYER)) {
