@@ -1,16 +1,19 @@
 package connectn;
 
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
 
-import connectn.Action;
-import connectn.Board;
-import connectn.Player;
-import connectn.Util;
+Akshay Thejaswi
+William Hartman
+ */
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Akshay on 1/22/2016.

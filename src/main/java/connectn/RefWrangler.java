@@ -1,11 +1,15 @@
 package connectn;
 
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
+ */
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- * Created by Akshay on 1/21/2016.
- */
 public class RefWrangler {
 
     private Scanner scanner;

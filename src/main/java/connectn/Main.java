@@ -1,10 +1,14 @@
 package connectn;
 
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
+ */
+
 import java.util.Date;
 
-/**
- * Created by will on 1/21/16.
- */
 public class Main {
     private static final int NAME_LENGTH = 10;
 

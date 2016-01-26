@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-/**
- * Created by Akshay on 1/21/2016.
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
  */
+
 public class Board {
 
     public static final byte EMPTY = 0;

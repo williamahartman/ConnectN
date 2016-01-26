@@ -1,6 +1,14 @@
 package connectn;
 
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
+ */
+
 import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Stopwatch {
 

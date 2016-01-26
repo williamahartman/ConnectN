@@ -1,10 +1,13 @@
 package connectn;
 
-/**
- * Created by Akshay on 1/22/2016.
- */
-public class Util {
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
 
+Akshay Thejaswi
+William Hartman
+ */
+
+public class Util {
 
     public static void printBoard(Board board) {
         byte[][] state = board.copyState();

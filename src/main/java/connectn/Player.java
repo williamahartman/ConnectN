@@ -1,8 +1,12 @@
 package connectn;
 
-/**
- * Created by will on 1/21/16.
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
  */
+
 public class Player {
 
     public final int numWin;

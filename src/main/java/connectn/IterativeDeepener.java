@@ -1,8 +1,12 @@
 package connectn;
 
-/**
- * Created by Akshay on 1/24/2016.
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
  */
+
 public class IterativeDeepener{
 
     private final long TIME_LIMIT_BUFFER = 250;

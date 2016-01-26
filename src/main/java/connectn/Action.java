@@ -1,8 +1,12 @@
 package connectn;
 
-/**
- * Created by Akshay on 1/21/2016.
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
  */
+
 public class Action {
 
     public static final int MOVE_DROP = 1;

@@ -6,9 +6,13 @@ import connectn.RefWrangler;
 
 import javax.swing.*;
 
-/**
- * Created by will on 1/23/16.
+/*
+CS4341 - Artificial Intelligence - WPI - Project 1
+
+Akshay Thejaswi
+William Hartman
  */
+
 public class DebugPlayerMain {
     public static Action getActionFromPrompt() {
         String s = (String) JOptionPane.showInputDialog(
