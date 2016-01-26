@@ -100,7 +100,7 @@ public class BoardTest {
         Util.printBoard(board6);
         assertEquals(1, board6.countRegions(Board.PLAYER, 2, 4));
 
-        Board board8 = new Board(new byte[][]{
+        Board board7 = new Board(new byte[][]{
                 {1, 2, 2, 2, 2, 0},
                 {1, 1, 1, 2, 1, 2},
                 {2, 0, 0, 0, 0, 0},
@@ -109,8 +109,8 @@ public class BoardTest {
                 {1, 1, 1, 2, 1, 0},
                 {1, 1, 1, 2, 1, 1},
         }, true, true, 4);
-        Util.printBoard(board8);
-        assertEquals(1, board8.countRegions(Board.PLAYER, 4, 4));
+        Util.printBoard(board7);
+        assertEquals(1, board7.countRegions(Board.PLAYER, 4, 4));
     }
 
     @Test
@@ -173,7 +173,7 @@ public class BoardTest {
         assertEquals(6, playerActions.size());
         assertEquals(6, oppActions.size());
 
-        Board board7 = new Board(new byte[][]{
+        Board board8 = new Board(new byte[][]{
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0},
@@ -184,11 +184,26 @@ public class BoardTest {
         }, true, true, 4);
 
         Player p = new Player(4, 0);
-        for(Action a: board7.getActions(Board.PLAYER)) {
+        for(Action a: board8.getActions(Board.PLAYER)) {
             System.out.println(a.column + (a.moveType == Action.MOVE_DROP ? " Drop" : " Pop"));
-            System.out.println("Heuristic Val: " + p.heuristic(board7.move(a)));
+            System.out.println("Heuristic Val: " + p.heuristic(board8.move(a)));
+            System.out.println();
+        }
+
+        Board board9 = new Board(new byte[][]{
+                {2, 1, 2, 1, 0, 0},
+                {0, 0, 0, 0, 0, 0},
+                {1, 2, 2, 1, 2, 2},
+                {2, 0, 0, 0, 0, 0},
+                {2, 1, 2, 2, 0, 0},
+                {1, 1, 0, 0, 0, 0},
+                {1, 1, 0, 0, 0, 0},
+        }, true, true, 4);
+
+        for(Action a: board9.getActions(Board.PLAYER)) {
+            System.out.println(a.column + (a.moveType == Action.MOVE_DROP ? " Drop" : " Pop"));
+            System.out.println("Heuristic Val: " + p.heuristic(board9.move(a)));
             System.out.println();
         }
     }
-
 }

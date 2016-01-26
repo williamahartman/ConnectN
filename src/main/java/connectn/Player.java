@@ -52,6 +52,7 @@ public class Player {
 
     private int max(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.PLAYER)){
+            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
             return heuristic(board);
         }
 
@@ -74,6 +75,7 @@ public class Player {
 
     private int min(Board board, int alpha, int beta, int currentDepth, int maxDepth, Flag stopFlag){
         if(currentDepth >= maxDepth || isTerminating(board, Board.OPPONENT)){
+            DebugPrinter.println("\tChecking Heuristic at depth " + currentDepth + ", max " + maxDepth);
             return heuristic(board);
         }
 
@@ -100,7 +102,8 @@ public class Player {
 
         if (board.countRegions(Board.PLAYER, numWin, numWin) > 0){
             return Integer.MAX_VALUE;
-        } else if (board.countRegions(Board.OPPONENT, numWin, numWin) > 0){
+        }
+        if (board.countRegions(Board.OPPONENT, numWin, numWin) > 0){
             return Integer.MIN_VALUE;
         }
 
@@ -115,9 +118,22 @@ public class Player {
 
         //Add value for chains of pieces
         int chainVal = 0;
+        //weigh horizontals and diagonals (quadratic)
         for(int i = 2; i < numWin; i++){
-            chainVal += board.countRegions(Board.PLAYER, i, numWin) * Math.pow(i, 3);
-            chainVal -= board.countRegions(Board.OPPONENT, i, numWin) * Math.pow(i, 3);
+            int playerCount = board.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_HORIZONTAL, i, numWin)
+                    + board.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_DIAGONAL_POSITIVE, i, numWin)
+                    + board.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_DIAGONAL_NEGATIVE, i, numWin);
+            chainVal += playerCount * Math.pow(i, 2);
+
+            int opponentCount = board.countRegionsDirectional(Board.OPPONENT, Board.DIRECTION_HORIZONTAL, i, numWin)
+                    + board.countRegionsDirectional(Board.OPPONENT, Board.DIRECTION_DIAGONAL_POSITIVE, i, numWin)
+                    + board.countRegionsDirectional(Board.OPPONENT, Board.DIRECTION_DIAGONAL_NEGATIVE, i, numWin);
+            chainVal -= opponentCount * Math.pow(i, 2);
+        }
+        //weigh verticals (linear)
+        for(int i = 2; i < numWin; i++){
+            chainVal += board.countRegionsDirectional(Board.PLAYER, Board.DIRECTION_VERTICAL, i, numWin);
+            chainVal -= board.countRegionsDirectional(Board.OPPONENT, Board.DIRECTION_VERTICAL, i, numWin);
         }
         value += chainVal;
 
